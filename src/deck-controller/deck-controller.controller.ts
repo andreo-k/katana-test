@@ -8,6 +8,8 @@ import { CreateDeckResponseDto } from '../create-deck-response-dto';
 import { OpenDeckResponseDto } from '../open-deck-response-dto';
 import { CardDto } from '../card-dto';
 import * as _ from 'lodash';
+import { DrawCardDto } from '../draw-card-dto';
+import { DrawCardResponseDto } from '../draw-card-response-dto';
 
 @Controller('deck')
 export class DeckControllerController {
@@ -31,4 +33,11 @@ export class DeckControllerController {
       cards: _.map(deck.cards, CardDto.toDto),
     };
   }
+
+  @Post('/draw')
+  async drawCard(@Body() dto: DrawCardDto): Promise<DrawCardResponseDto> {
+    let drawn = await this.service.drawCard(dto.deckId, dto.amount);
+    return { cards: _.map(drawn, CardDto.toDto) };
+  }
+
 }

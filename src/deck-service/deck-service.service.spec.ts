@@ -27,12 +27,4 @@ describe('DeckServiceService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
-
-  it('foo should return 2', () => {
-    expect(service.foo()).toBe(2);
-  });
-
-  it('testCache should return Pringles', async () => {
-    expect(await service.testCache()).toBe('Pringles');
-  });
 });
