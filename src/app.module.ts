@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import { DeckServiceService } from './deck-service/deck-service.service';
 import { CacheModule } from '@nestjs/common';
 import { RedisClientOptions } from 'redis';
+import { DeckControllerController } from './deck-controller/deck-controller.controller';
 import * as redisStore from 'cache-manager-redis-store';
 
 @Module({
@@ -16,7 +17,7 @@ import * as redisStore from 'cache-manager-redis-store';
       },
     }),
   ],
-  controllers: [AppController],
+  controllers: [AppController, DeckControllerController],
   providers: [AppService, DeckServiceService],
 })
 export class AppModule {}
