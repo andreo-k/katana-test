@@ -35,5 +35,4 @@ describe('DeckServiceService', () => {
   it('testCache should return Pringles', async () => {
     expect(await service.testCache()).toBe('Pringles');
   });
-
 });

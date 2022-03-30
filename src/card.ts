@@ -4,7 +4,7 @@ export enum CardSuite {
   SPADES = 'SPADES',
   CLUBS = 'CLUBS',
   DIAMONDS = 'DIAMONDS',
-  HEARTS = 'HEARTS'
+  HEARTS = 'HEARTS',
 }
 
 export enum CardRank {
@@ -20,23 +20,22 @@ export enum CardRank {
   JACK = 'JACK',
   QUEEN = 'QUEEN',
   KING = 'KING',
-  ACE = 'ACE'
+  ACE = 'ACE',
 }
 
+export var ALL_CARD_RANKS = [CardRank._2, CardRank._3, CardRank._4, CardRank._5, CardRank._6,
+  CardRank._7, CardRank._8, CardRank._9, CardRank._10,
+  CardRank.JACK, CardRank.QUEEN, CardRank.KING, CardRank.ACE];
 
 export class Card {
   @IsNotEmpty()
   @IsEnum(CardSuite)
-  public suite: CardSuite;
+  public suit: CardSuite;
 
   @IsNotEmpty()
   @IsEnum(CardRank)
   public rank: CardRank;
 
-  public constructor() {}
-
-  // public constructor(suite: CardSuite, rank: CardRank) {
-  //   this.suite = suite;
-  //   this.rank = rank;
-  // }
+  public constructor() {
+  }
 }

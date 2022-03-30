@@ -1,12 +1,12 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { Card } from '../card';
+import { CreateDeckRequestDto } from '../create-deck-request-dto';
+import { Deck } from '../deck';
 
 @Controller('deck')
 export class DeckControllerController {
-
   @Post()
-  create(@Body() card: Card): any {
-    console.log('!!! card is ', JSON.stringify(card));
-    return {status: 0, substatus: {value: 3}};
+  create(@Body() dto: CreateDeckRequestDto): any {
+    return Deck.generate(dto.type, dto.shuffled);
   }
 }

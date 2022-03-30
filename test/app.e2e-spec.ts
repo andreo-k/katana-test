@@ -3,6 +3,7 @@ import { INestApplication, ValidationPipe } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
 import { CardSuite } from '../src/card';
+import { DeckType } from '../src/deck';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -13,7 +14,7 @@ describe('AppController (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
-    app.useGlobalPipes(new ValidationPipe({transform: true}));
+    app.useGlobalPipes(new ValidationPipe({ transform: true }));
     await app.init();
   });
 
@@ -27,9 +28,8 @@ describe('AppController (e2e)', () => {
   it('/deck (POST)', () => {
     return request(app.getHttpServer())
       .post('/deck')
-      .send({suite: CardSuite.CLUBS, rank: 'JACK'})
+      .send({ type: DeckType.FULL, shuffled: true })
       .expect(201)
-      .expect({status: 0,  substatus: {value: 3}});
+      .expect({ status: 0, substatus: { value: 3 } });
   });
-
 });
