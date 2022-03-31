@@ -1,5 +1,3 @@
-import { IsEmail, IsNotEmpty, IsEnum, Matches } from 'class-validator';
-
 export enum CardSuite {
   SPADES = 'SPADES',
   CLUBS = 'CLUBS',
@@ -23,14 +21,23 @@ export enum CardRank {
   ACE = 'ACE',
 }
 
-export var ALL_CARD_RANKS = [CardRank._2, CardRank._3, CardRank._4, CardRank._5, CardRank._6,
-  CardRank._7, CardRank._8, CardRank._9, CardRank._10,
-  CardRank.JACK, CardRank.QUEEN, CardRank.KING, CardRank.ACE];
+export const ALL_CARD_RANKS = [
+  CardRank._2,
+  CardRank._3,
+  CardRank._4,
+  CardRank._5,
+  CardRank._6,
+  CardRank._7,
+  CardRank._8,
+  CardRank._9,
+  CardRank._10,
+  CardRank.JACK,
+  CardRank.QUEEN,
+  CardRank.KING,
+  CardRank.ACE,
+];
 
 export class Card {
   public suit: CardSuite;
   public rank: CardRank;
-
-  public constructor() {
-  }
 }

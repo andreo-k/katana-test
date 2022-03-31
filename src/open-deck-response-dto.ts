@@ -1,5 +1,4 @@
 import { DeckType } from './deck';
-import { Card } from './card';
 import { CardDto } from './card-dto';
 
 export class OpenDeckResponseDto {

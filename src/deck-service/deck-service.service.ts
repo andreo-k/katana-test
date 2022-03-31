@@ -1,4 +1,10 @@
-import { CACHE_MANAGER, HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import {
+  CACHE_MANAGER,
+  HttpException,
+  HttpStatus,
+  Inject,
+  Injectable,
+} from '@nestjs/common';
 import { Cache } from 'cache-manager';
 import { Deck, DeckType } from '../deck';
 import { Card } from '../card';
@@ -9,29 +15,38 @@ export class DeckServiceService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   public async createDeck(type: DeckType, shuffled: boolean): Promise<Deck> {
-    let deck = Deck.generate(type, shuffled);
+    const deck = Deck.generate(type, shuffled);
     await this.cacheManager.set(deck.deckId, deck);
     return deck;
   }
 
   public async openDeck(uid: string): Promise<Deck> {
-    let res = await this.cacheManager.get(uid);
+    const res = await this.cacheManager.get(uid);
     if (!res) {
-      throw new HttpException('Can not find deck by uid', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Can not find deck by uid',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     return res as Deck;
   }
 
   public async drawCard(deckId: string, amount: number): Promise<Card[]> {
-    let deck = await this.cacheManager.get(deckId) as Deck;
+    const deck = (await this.cacheManager.get(deckId)) as Deck;
     if (!deck) {
-      throw new HttpException('Can not find deck by uid', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Can not find deck by uid',
+        HttpStatus.BAD_REQUEST,
+      );
     }
     if (amount > deck.cards.length) {
-      throw new HttpException('Amount passed exceeds number of remaining cards', HttpStatus.BAD_REQUEST);
+      throw new HttpException(
+        'Amount passed exceeds number of remaining cards',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
-    let drawn = _.take(deck.cards, amount);
+    const drawn = _.take(deck.cards, amount);
 
     deck.cards = _.slice(deck.cards, amount);
 

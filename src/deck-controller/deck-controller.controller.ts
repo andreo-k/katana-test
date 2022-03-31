@@ -1,8 +1,5 @@
-import { Body, Controller, Get, Inject, Param, Post } from '@nestjs/common';
-import { Card } from '../card';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateDeckRequestDto } from '../create-deck-request-dto';
-import { Deck } from '../deck';
-import { Cache } from 'cache-manager';
 import { DeckServiceService } from '../deck-service/deck-service.service';
 import { CreateDeckResponseDto } from '../create-deck-response-dto';
 import { OpenDeckResponseDto } from '../open-deck-response-dto';
@@ -13,18 +10,24 @@ import { DrawCardResponseDto } from '../draw-card-response-dto';
 
 @Controller('deck')
 export class DeckControllerController {
-  constructor(private service: DeckServiceService) {
-  }
+  constructor(private service: DeckServiceService) {}
 
   @Post()
-  async create(@Body() dto: CreateDeckRequestDto): Promise<CreateDeckResponseDto> {
-    let deck = await this.service.createDeck(dto.type, dto.shuffled);
-    return { deckId: deck.deckId, remaining: deck.cards.length, shuffled: deck.shuffled, type: deck.type };
+  async create(
+    @Body() dto: CreateDeckRequestDto,
+  ): Promise<CreateDeckResponseDto> {
+    const deck = await this.service.createDeck(dto.type, dto.shuffled);
+    return {
+      deckId: deck.deckId,
+      remaining: deck.cards.length,
+      shuffled: deck.shuffled,
+      type: deck.type,
+    };
   }
 
   @Get('/open/:uid')
   async open(@Param('uid') uid: string): Promise<OpenDeckResponseDto> {
-    let deck = await this.service.openDeck(uid);
+    const deck = await this.service.openDeck(uid);
     return {
       deckId: deck.deckId,
       remaining: deck.cards.length,
@@ -36,8 +39,7 @@ export class DeckControllerController {
 
   @Post('/draw')
   async drawCard(@Body() dto: DrawCardDto): Promise<DrawCardResponseDto> {
-    let drawn = await this.service.drawCard(dto.deckId, dto.amount);
+    const drawn = await this.service.drawCard(dto.deckId, dto.amount);
     return { cards: _.map(drawn, CardDto.toDto) };
   }
-
 }
