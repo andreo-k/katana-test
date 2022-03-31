@@ -1,8 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { DeckServiceService } from './deck-service.service';
 import { CacheModule, HttpException } from '@nestjs/common';
-import { RedisClientOptions } from 'redis';
-import * as redisStore from 'cache-manager-redis-store';
 import { Deck, DeckType } from '../deck';
 import { Card } from '../card';
 
@@ -12,13 +10,7 @@ describe('DeckServiceService', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        CacheModule.register<RedisClientOptions>({
-          store: redisStore,
-          socket: {
-            host: 'localhost',
-            port: 6379,
-          },
-        }),
+        CacheModule.register(),
       ],
       providers: [DeckServiceService],
     }).compile();
