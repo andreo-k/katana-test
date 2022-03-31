@@ -10,13 +10,15 @@ import { Deck, DeckType } from '../deck';
 import { Card } from '../card';
 import * as _ from 'lodash';
 
+const REDIS_TTL = 1000; // in seconds
+
 @Injectable()
 export class DeckServiceService {
   constructor(@Inject(CACHE_MANAGER) private cacheManager: Cache) {}
 
   public async createDeck(type: DeckType, shuffled: boolean): Promise<Deck> {
     const deck = Deck.generate(type, shuffled);
-    await this.cacheManager.set(deck.deckId, deck);
+    await this.cacheManager.set(deck.deckId, deck,  { ttl: REDIS_TTL });
     return deck;
   }
 
@@ -50,7 +52,7 @@ export class DeckServiceService {
 
     deck.cards = _.slice(deck.cards, amount);
 
-    await this.cacheManager.set(deck.deckId, deck); // save modified deck
+    await this.cacheManager.set(deck.deckId, deck, { ttl: REDIS_TTL }); // save modified deck
 
     return drawn;
   }
