@@ -83,9 +83,6 @@ describe('AppController (e2e)', () => {
     // check two cards on top
     expect(res4.body.cards[0].code).toBe(res2.body.cards[2].code);
     expect(res4.body.cards[1].code).toBe(res2.body.cards[3].code);
-
-
-    console.log('done');
   });
 
 });
