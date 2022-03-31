@@ -27,12 +27,12 @@ describe('AppController (e2e)', () => {
   });
 
   it('create full unshuffled deck and open it', async() => {
-    let res1:any = await request(app.getHttpServer())
+    let res1: any = await request(app.getHttpServer())
       .post('/deck')
       .send({ type: DeckType.FULL, shuffled: false })
       .expect(201);
 
-    let res2 = await request(app.getHttpServer())
+    let res2: any = await request(app.getHttpServer())
       .get(`/deck/open/${res1.body.deckId}`)
       .expect(200);
 
@@ -43,12 +43,12 @@ describe('AppController (e2e)', () => {
   });
 
   it('create short shuffled deck and draw some cards', async() => {
-    let res1 : any = await request(app.getHttpServer())
+    let res1: any = await request(app.getHttpServer())
       .post('/deck')
       .send({ type: DeckType.SHORT, shuffled: true })
       .expect(201);
 
-    let res2 : any = await request(app.getHttpServer())
+    let res2: any = await request(app.getHttpServer())
       .get(`/deck/open/${res1.body.deckId}`)
       .expect(200);
 
@@ -59,7 +59,7 @@ describe('AppController (e2e)', () => {
     expect(_.filter(res2.body.cards, c => c.value === CardRank.ACE).length).toBe(4);
 
     // try to draw two cards
-    let res3 : any = await request(app.getHttpServer())
+    let res3: any = await request(app.getHttpServer())
       .post('/deck/draw')
       .send({ deckId: res1.body.deckId, amount: 2 })
       .expect(201);
@@ -75,7 +75,7 @@ describe('AppController (e2e)', () => {
       .expect(400);
 
     // check content of deck again
-    let res4 : any = await request(app.getHttpServer())
+    let res4: any = await request(app.getHttpServer())
       .get(`/deck/open/${res1.body.deckId}`)
       .expect(200);
     expect(res4.body.deckId).toBe(res1.body.deckId);
