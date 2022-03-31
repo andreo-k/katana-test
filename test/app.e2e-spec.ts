@@ -19,11 +19,25 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
+  it('test input validation', async() => {
+    await request(app.getHttpServer())
+      .post('/deck')
+      .send({ type: 'wrong', shuffled: false })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .post('/deck')
+      .send({ type: DeckType.FULL, shuffled: 123 })
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .get(`/deck/open/wrong-uid`)
+      .expect(400);
+
+    await request(app.getHttpServer())
+      .post('/deck/draw')
+      .send({ deckId: 'wrong-uid', amount: 2 })
+      .expect(400);
   });
 
   it('create full unshuffled deck and open it', async() => {
@@ -57,6 +71,12 @@ describe('AppController (e2e)', () => {
 
     // make sure that there are four aces somewhere
     expect(_.filter(res2.body.cards, c => c.value === CardRank.ACE).length).toBe(4);
+    
+    // test validation of 'amount' argument
+    await request(app.getHttpServer())
+      .post('/deck/draw')
+      .send({ deckId: res1.body.deckId, amount: 'wrong-num' })
+      .expect(400);
 
     // try to draw two cards
     let res3: any = await request(app.getHttpServer())
